@@ -47,38 +47,38 @@ func (n *Node) Find(key int) *Node {
 	return nil
 }
 
-func (n Node) RightFirst() []int {
+func (n Node) PreOrder() []int {
 	var sorted []int
-	if n.Right != nil {
-		sorted = append(sorted, n.Right.RightFirst()...)
-	}
 	sorted = append(sorted, n.key)
+	if n.Right != nil {
+		sorted = append(sorted, n.Right.PreOrder()...)
+	}
 	if n.Left != nil {
-		sorted = append(sorted, n.Left.RightFirst()...)
+		sorted = append(sorted, n.Left.PreOrder()...)
 	}
 	return sorted
 }
 
-func (n Node) RootFirst() []int {
+func (n Node) InOrder() []int {
 	var sorted []int
+	if n.Left != nil {
+		sorted = append(sorted, n.Left.InOrder()...)
+	}
 	sorted = append(sorted, n.key)
 	if n.Right != nil {
-		sorted = append(sorted, n.Right.RootFirst()...)
-	}
-	if n.Left != nil {
-		sorted = append(sorted, n.Left.RootFirst()...)
+		sorted = append(sorted, n.Right.InOrder()...)
 	}
 	return sorted
 }
 
-func (n Node) LeftFirst() []int {
+func (n Node) PostOrder() []int {
 	var sorted []int
-	if n.Left != nil {
-		sorted = append(sorted, n.Left.LeftFirst()...)
+	if n.Right != nil {
+		sorted = append(sorted, n.Right.PostOrder()...)
 	}
 	sorted = append(sorted, n.key)
-	if n.Right != nil {
-		sorted = append(sorted, n.Right.LeftFirst()...)
+	if n.Left != nil {
+		sorted = append(sorted, n.Left.PostOrder()...)
 	}
 	return sorted
 }
@@ -142,29 +142,91 @@ func (n *Node) MergeLTR() (node *Node, moved bool) {
 	return n, true
 }
 
+func (n Node) IsLeaf() bool {
+	return n.Left == nil && n.Right == nil
+}
+
+func (n Node) IsRoot() bool {
+	return n.Parent == nil
+}
+
+func (n Node) IsAncestorOf(child Node) (isParent bool, depth int) {
+	return child.IsChildOf(n)
+}
+
+func (n Node) IsChildOf(parent Node) (isChild bool, depth int) {
+	for np, d := n.Parent, 1; np == nil; {
+		if np == &parent {
+			return true, d
+		}
+		np = np.Parent
+	}
+	return false, 0
+}
+
 func (n *Node) Swap(toSwap *Node) bool {
 
 	if toSwap == nil {
 		return false
 	}
 
-	//copy := toSwap
-	//toSwap.Remove()
-	//
-	//copy.Parent = n.Parent
-	//copy.Left = n.Left
-	//copy.Right = n.Right
-	//
-	//n = copy
-	//
-	//toSwap.Parent = n.Parent
+	tmp := toSwap.key
+	toSwap.key = n.key
+	n.key = tmp
 
 	return true
 
 }
 
+func (n *Node) SwapLeaf(leaf *Node) bool {
+	if n == nil || leaf == nil || !leaf.IsLeaf() {
+		return false
+	}
+	n.key = leaf.key
+	return leaf.Remove()
+}
+
 func (n *Node) Remove() bool {
+	isRightNode := false
+	if n.Parent == nil {
+		return false
+	} else if n.Parent.Right != nil && n.Parent.Right.key == n.key {
+		isRightNode = true
+	}
 
+	// Case 1: No children
+	if n.Left == nil && n.Right == nil {
+		if isRightNode {
+			n.Parent.Right = nil
+		} else {
+			n.Parent.Left = nil
+		}
+		return true
+	} else if n.Left != nil && n.Right != nil {
+		// Case 2: Two children
+		closest, _ := n.ClosestRight() // Get the closest right node
+		n.Swap(closest)
+		return closest.Remove()
+	}
 
+	// Case 3: One Child
+	if n.Right != nil {
+		n.Right.Parent = n.Parent
+		if isRightNode {
+			n.Parent.Right = n.Right
+		} else {
+			n.Parent.Left = n.Right
+		}
+
+	} else {
+		n.Left.Parent = n.Parent
+		if isRightNode {
+			n.Parent.Right = n.Left
+		} else {
+			n.Parent.Left = n.Left
+		}
+	}
+
+	return true
 
 }

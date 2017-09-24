@@ -27,72 +27,32 @@ func (t *Tree) Remove(key int) bool {
 		return false
 	}
 
-	n := t.Find(key)
-
-	if n == nil {
-		return false
-	}
-
-	var container string
-
-	if n.key == t.Root.key {
-		container = "root"
-	} else if n.Parent.Right != nil && n.Parent.Right.key == n.key {
-		container = "right"
-	} else {
-		container = "left"
+	if t.Root.key != key {
+		n := t.Root.Find(key)
+		if n == nil {
+			return false
+		}
+		return n.Remove()
 	}
 
 	// Case 1: No children
-	if n.Left == nil && n.Right == nil {
-		switch container {
-		case "root":
-			t.Root = nil
-		case "right":
-			n.Parent.Right = nil
-		case "left":
-			n.Parent.Left = nil
-		}
+	if t.Root.Left == nil && t.Root.Right == nil {
+		t.Root = nil
 		return true
-	} else if n.Left != nil && n.Right != nil {
+	} else if t.Root.Left != nil && t.Root.Right != nil {
 		// Case 2: Two children
-		closest, _ := n.ClosestRight() // Get the closest right node
-
-		//closest.Remove()               // Remove the closest node to prevent duplicates
-		//closest.Parent = n.Parent      // Rewire relations
-
-		switch container {
-		case "root":
-			t.Root = nil
-		case "right":
-			n.Parent.Right = nil
-		case "left":
-			n.Parent.Left = nil
-		}
-
-		if rightNode {
-			n.Parent.Right = closest
-		} else {
-			n.Parent.Left = closest
-		}
-
-		return true
+		closest, _ := t.Root.ClosestRight() // Get the closest right node
+		t.Root.Swap(closest)
+		return closest.Remove()
 	}
 
 	// Case 3: One Child
-	var onlyChild *Node
-
-	if n.Right != nil {
-		onlyChild = n.Right
+	if t.Root.Right != nil {
+		t.Root.Right.Parent = nil
+		t.Root = t.Root.Right
 	} else {
-		onlyChild = n.Left
-	}
-
-	onlyChild.Parent = n.Parent
-	if rightNode {
-		n.Parent.Right = onlyChild
-	} else {
-		n.Parent.Left = onlyChild
+		t.Root.Left.Parent = nil
+		t.Root = t.Root.Left
 	}
 
 	return true
@@ -102,28 +62,23 @@ func (t Tree) Find(key int) *Node {
 	return t.Root.Find(key)
 }
 
-func (t Tree) LeftFirst() []int {
+func (t Tree) InOrder() []int {
 	if t.Root == nil {
 		return []int{}
 	}
-	return t.Root.LeftFirst()
+	return t.Root.InOrder()
 }
 
-func (t Tree) RootFirst() []int {
+func (t Tree) PreOrder() []int {
 	if t.Root == nil {
 		return []int{}
 	}
-	return t.Root.RootFirst()
+	return t.Root.PreOrder()
 }
 
-func (t Tree) RightFirst() []int {
+func (t Tree) PostOrder() []int {
 	if t.Root == nil {
 		return []int{}
 	}
-	return t.Root.RightFirst()
+	return t.Root.PostOrder()
 }
-
-//
-//func (t Tree) Traverse() func(t Tree) [] int {
-//
-//}

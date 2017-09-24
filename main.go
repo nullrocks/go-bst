@@ -12,7 +12,7 @@ func main() {
 
 	fmt.Println(len(nums))
 
-	for _, n := range (nums) {
+	for _, n := range nums {
 		tree.Insert(n)
 	}
 
@@ -20,9 +20,11 @@ func main() {
 	//
 	sum := 0
 
-	for _, n := range (nums) {
-		if tree.Remove(n) {
-			sum += 1
+	for _, n := range nums {
+		if sum % 2 == 1 && tree.Remove(n) {
+			sum++
+		} else {
+			sum++
 		}
 	}
 
@@ -46,9 +48,9 @@ func main() {
 	//fmt.Println(tree.Remove(111))
 	//fmt.Println(tree.Remove(1))
 	//
-	fmt.Println(tree.RightFirst())
-	fmt.Println(tree.LeftFirst())
-	fmt.Println(tree.RootFirst())
+	fmt.Println(tree.InOrder())
+	fmt.Println(tree.PreOrder())
+	fmt.Println(tree.PostOrder())
 
 	//x, y, z := 4, 5, 6
 	//
