@@ -15,16 +15,16 @@ func TestNode_Insert(t *testing.T) {
 	if n.Right == nil {
 		t.Error("Right Node shouldn't be nil")
 	}
-	if n.Right.key != 3 {
-		t.Error("Expected 3 got", n.Right.key)
+	if n.Right.Key != 3 {
+		t.Error("Expected 3 got", n.Right.Key)
 	}
 
 	n.Insert(insLeft)
 	if n.Left == nil {
 		t.Error("Left Node shouldn't be nil")
 	}
-	if n.Left.key != 1 {
-		t.Error("Expected 1 got", n.Right.key)
+	if n.Left.Key != 1 {
+		t.Error("Expected 1 got", n.Right.Key)
 	}
 
 }

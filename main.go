@@ -16,8 +16,6 @@ func main() {
 		tree.Insert(n)
 	}
 
-	//tree.Remove(10)
-	//
 	sum := 0
 
 	for _, n := range nums {
@@ -30,43 +28,8 @@ func main() {
 
 	fmt.Println(sum)
 
-	//tree.Insert(bst.NewNode(11))
-	//tree.Insert(bst.NewNode(112))
-	//tree.Insert(bst.NewNode(13))
-	//tree.Insert(bst.NewNode(1))
-	//tree.Insert(bst.NewNode(111))
-	//
-	//fmt.Println(tree.RightFirst())
-	//fmt.Println(tree.LeftFirst())
-	//fmt.Println(tree.RootFirst())
-	//
-	//fmt.Println(tree.Remove(13))
-	//fmt.Println(tree.Remove(10))
-	//fmt.Println(tree.Remove(11))
-	//fmt.Println(tree.Remove(111))
-	//fmt.Println(tree.Remove(112))
-	//fmt.Println(tree.Remove(111))
-	//fmt.Println(tree.Remove(1))
-	//
 	fmt.Println(tree.InOrder())
 	fmt.Println(tree.PreOrder())
 	fmt.Println(tree.PostOrder())
-
-	//x, y, z := 4, 5, 6
-	//
-	////aX, aY, aZ := *x, *y, *z
-	//var aX *int = &x
-	//var aY *int = &y
-	//var aZ *int = &z
-	//
-	//fmt.Println(*aX)
-	//fmt.Println(aY)
-	//fmt.Println(aZ)
-	//
-	//aX = aZ
-	//
-	//fmt.Println(*aX)
-	//fmt.Println(aY)
-	//fmt.Println(aZ)
 
 }

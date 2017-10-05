@@ -1,7 +1,7 @@
 package bst
 
 type Node struct {
-	key    int
+	Key    int
 	Parent *Node
 	Left   *Node
 	Right  *Node
@@ -19,13 +19,13 @@ func (n *Node) Insert(leaf Node) {
 	var parent *Node
 	for current != nil {
 		parent = current
-		if leaf.key >= current.key {
+		if leaf.Key >= current.Key {
 			current = current.Right
 		} else {
 			current = current.Left
 		}
 	}
-	if leaf.key >= parent.key {
+	if leaf.Key >= parent.Key {
 		parent.Right = &leaf
 	} else {
 		parent.Left = &leaf
@@ -35,10 +35,10 @@ func (n *Node) Insert(leaf Node) {
 
 func (n *Node) Find(key int) *Node {
 	for current := n; current != nil; {
-		if current.key == key {
+		if current.Key == key {
 			return current
 		}
-		if key >= current.key {
+		if key >= current.Key {
 			current = current.Right
 		} else {
 			current = current.Left
@@ -49,7 +49,7 @@ func (n *Node) Find(key int) *Node {
 
 func (n Node) PreOrder() []int {
 	var sorted []int
-	sorted = append(sorted, n.key)
+	sorted = append(sorted, n.Key)
 	if n.Right != nil {
 		sorted = append(sorted, n.Right.PreOrder()...)
 	}
@@ -64,7 +64,7 @@ func (n Node) InOrder() []int {
 	if n.Left != nil {
 		sorted = append(sorted, n.Left.InOrder()...)
 	}
-	sorted = append(sorted, n.key)
+	sorted = append(sorted, n.Key)
 	if n.Right != nil {
 		sorted = append(sorted, n.Right.InOrder()...)
 	}
@@ -76,7 +76,7 @@ func (n Node) PostOrder() []int {
 	if n.Right != nil {
 		sorted = append(sorted, n.Right.PostOrder()...)
 	}
-	sorted = append(sorted, n.key)
+	sorted = append(sorted, n.Key)
 	if n.Left != nil {
 		sorted = append(sorted, n.Left.PostOrder()...)
 	}
@@ -170,9 +170,9 @@ func (n *Node) Swap(toSwap *Node) bool {
 		return false
 	}
 
-	tmp := toSwap.key
-	toSwap.key = n.key
-	n.key = tmp
+	tmp := toSwap.Key
+	toSwap.Key = n.Key
+	n.Key = tmp
 
 	return true
 
@@ -182,7 +182,7 @@ func (n *Node) SwapLeaf(leaf *Node) bool {
 	if n == nil || leaf == nil || !leaf.IsLeaf() {
 		return false
 	}
-	n.key = leaf.key
+	n.Key = leaf.Key
 	return leaf.Remove()
 }
 
@@ -190,7 +190,7 @@ func (n *Node) Remove() bool {
 	isRightNode := false
 	if n.Parent == nil {
 		return false
-	} else if n.Parent.Right != nil && n.Parent.Right.key == n.key {
+	} else if n.Parent.Right != nil && n.Parent.Right.Key == n.Key {
 		isRightNode = true
 	}
 

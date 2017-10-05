@@ -27,7 +27,7 @@ func (t *Tree) Remove(key int) bool {
 		return false
 	}
 
-	if t.Root.key != key {
+	if t.Root.Key != key {
 		n := t.Root.Find(key)
 		if n == nil {
 			return false
